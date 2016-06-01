@@ -1,0 +1,40 @@
+<COLLADA xmlns="http://www.collada.org/2005/11/COLLADASchema" version="1.4.1">
+  <asset>
+    <created>2016-06-01T10:45:54.164697</created>
+    <modified>2016-06-01T10:45:54.164711</modified>
+    <up_axis>Y_UP</up_axis>
+  </asset>
+  <library_geometries>
+    <geometry id="geometry0" name="MySphere">
+      <mesh>
+        <source id="verts-array">
+          <float_array count="90" id="verts-array-array">1727 3713 4094 1728 3713 4093 1727 3712 4094 1728 3712 4093 1727 3713 4095 1727 3712 4094 1727 3712 4095 1727 3714 4094 1728 3714 4093 1727 3714 4095 1727 3715 4094 1728 3715 4093 1727 3715 4095 1727 3716 4094 1728 3716 4093 1727 3716 4095 1728 3717 4094 1728 3717 4095 1729 3713 4094 1729 3712 4094 1728 3712 4093 1729 3713 4095 1729 3712 4094 1729 3712 4095 1729 3714 4094 1729 3714 4095 1729 3715 4094 1729 3715 4095 1729 3716 4094 1729 3716 4095</float_array>
+          <technique_common>
+            <accessor count="30" source="#verts-array-array" stride="3">
+              <param type="float" name="X"/>
+              <param type="float" name="Y"/>
+              <param type="float" name="Z"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="verts-array-vertices">
+          <input source="#verts-array" semantic="POSITION"/>
+        </vertices>
+        <triangles count="38" material="">
+          <input source="#verts-array-vertices" semantic="VERTEX" offset="0"/>
+          <p>1 3 2 0 1 2 5 6 0 6 4 0 8 1 0 7 8 0 0 4 7 4 9 7 11 8 7 10 11 7 7 9 10 9 12 10 14 11 10 13 14 10 10 12 13 12 15 13 14 13 16 13 15 17 16 13 17 18 19 20 1 18 20 22 18 23 23 18 21 24 18 1 8 24 1 18 24 21 21 24 25 26 24 8 11 26 8 24 26 25 25 26 27 28 26 11 14 28 11 26 28 27 27 28 29 28 14 16 29 28 16 17 29 16</p>
+        </triangles>
+      </mesh>
+    </geometry>
+  </library_geometries>
+  <library_visual_scenes>
+    <visual_scene id="mcubes_scene">
+      <node name="MySphere" id="MySphere">
+        <instance_geometry url="#geometry0"/>
+      </node>
+    </visual_scene>
+  </library_visual_scenes>
+  <scene>
+    <instance_visual_scene url="#mcubes_scene"/>
+  </scene>
+</COLLADA>
