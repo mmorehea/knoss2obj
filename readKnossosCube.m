@@ -62,7 +62,7 @@ if( exist( kl_fullfile, 'file' ) )
 else
     classT2=bsxfun(@eq,classT,'>');
     classT2=classT(find(classT2)+1:end);
-    warning('auxiliaryMethods:readKnossosCube', 'Attempting to read from cube that does not exist');
+    %warning('auxiliaryMethods:readKnossosCube', 'Attempting to read from cube that does not exist');
     if returnZeros
         kl_cube = zeros( cubesize, classT2 );
     else
