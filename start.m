@@ -34,4 +34,4 @@ max_y = (max(y) * 128) + 128;
 min_z = min(z) * 128;
 max_z = (max(z) * 128) + 128;
 
-readKnossosRoi( 'J:\code\knoss2obj\data', prefix, [min_x max_x; min_y max_y; min_z max_z], 'uint16' )
+readKnossosRoi( path, prefix, [min_x max_x; min_y max_y; min_z max_z], 'uint16' )
