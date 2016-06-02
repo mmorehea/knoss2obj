@@ -1,4 +1,4 @@
-
+function kl_cube = readKnossosCube( kl_parfolder, kl_fileprefix, kl_cubeCoord, classT, kl_filesuffix, ending, cubesize, returnZeros)
 
 % READKNOSSOSCUBE: Read raw data from EM into Matlab
 %
@@ -21,19 +21,52 @@
 %   moritz.helmstaedter@brain.mpg.de
 %   Max Planck Gesellschaft
 %
-%   => readKnossosCube( �E:\e_k0563\k_0563_mag1', �100527_k0563_mag1�, [21 30 150], �uint8� )
+%   => readKnossosCube( ?E:\e_k0563\k_0563_mag1', ?100527_k0563_mag1?, [21 30 150], ?uint8? )
 %
 
+if ~exist('classT','var') || isempty(classT)
+    classT = 'uint8=>uint8';
+end
+if ~exist('ending','var') || isempty(ending)
+    ending = 'raw';
+end
+if ~exist('kl_filesuffix','var') || isempty(kl_filesuffix)
+    kl_filesuffix = '';
+end
+if ~exist('cubesize','var') || isempty(cubesize)
+    cubesize = [128 128 128];
+elseif numel(cubesize) == 1
+    cubesize=repmat(cubesize,1,3);
+end
+if ~exist('returnZeros','var') || isempty(returnZeros)
+    returnZeros = true;
+end
+
 % Building the full filename
-kl_fullfile = '/home/mdm/Pictures/knossTest/knossos_cuber_project_mag1_x0044_y0030_z0006.raw';
+kl_fullfile = fullfile( kl_parfolder, ...
+    sprintf( ['%s_x%04.0f_y%04.0f_z%04.0f%s.' ending], kl_fileprefix, kl_cubeCoord, kl_filesuffix ) );
 
-
-  %kl_parfolder, sprintf( 'x%04.0f', kl_cubeCoord(1) ),...
-  %  sprintf( 'y%04.0f', kl_cubeCoord(2) ), sprintf( 'z%04.0f', kl_cubeCoord(3) ),...
-  %  sprintf( ['%s_x%04.0f_y%04.0f_z%04.0f%s.' ending], kl_fileprefix, kl_cubeCoord, kl_filesuffix ) );
-
-classT = 'uint8=>uint8';
-fid = fopen( kl_fullfile );
-kl_cube = fread(fid, classT);
-fclose(fid);
-disp('ok')
+% If this file exists, load it into Matlab, else fill the matrix with zeros
+if( exist( kl_fullfile, 'file' ) )
+    if( strcmp( ending, 'raw' ) )
+        fid = fopen( kl_fullfile );
+        kl_cube = fread( fid, classT);
+        kl_cube = reshape( kl_cube, cubesize);
+        fclose( fid );
+    else
+        load( kl_fullfile );
+        if ~exist( 'kl_cube', 'var' )
+            kl_cube = kl_stack;
+        end
+    end
+else
+    classT2=bsxfun(@eq,classT,'>');
+    classT2=classT(find(classT2)+1:end);
+    warning('auxiliaryMethods:readKnossosCube', 'Attempting to read from cube that does not exist');
+    if returnZeros
+        kl_cube = zeros( cubesize, classT2 );
+    else
+        kl_cube = [];
+    end
+end
+end
