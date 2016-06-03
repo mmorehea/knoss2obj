@@ -82,7 +82,7 @@ function success = readKnossosRoi( out_name, kl_parfolder, kl_fileprefix, kl_bbo
     kl_roi = single(kl_roi);
     [F, V] = MarchingCubes(x, y, z, kl_roi, 0);
     
-    output_name = strcat('obj\', out_name, '.obj');
+    output_name = strcat('./obj/', out_name, '.obj');
     file = fopen(output_name, 'w');
     for i = 1:length(V)
         fprintf(file, 'v %0.3f %0.3f %0.3f \n', V(i,1), V(i,2), V(i,3));
@@ -91,6 +91,7 @@ function success = readKnossosRoi( out_name, kl_parfolder, kl_fileprefix, kl_bbo
         fprintf(file, 'f %0.3f %0.3f %0.3f \n', F(i,1), F(i,2), F(i,3));
     end
     
-    fclose(file);
+    fclose('all')
+    
     success = 1;
     return
