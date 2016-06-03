@@ -68,8 +68,6 @@ function kl_roi = readKnossosRoi( kl_parfolder, kl_fileprefix, kl_bbox, classT, 
                     kl_cube( kl_validbbox_cube(1,1) : kl_validbbox_cube(1,2),...
                     kl_validbbox_cube(2,1) : kl_validbbox_cube(2,2),...
                     kl_validbbox_cube(3,1) : kl_validbbox_cube(3,2), : );
-                fprintf( '.' );
-                
                 
             end
         end

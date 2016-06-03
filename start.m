@@ -1,6 +1,7 @@
 path = [pwd,'/',mfilename];
 path = path(1:length(path)-6);
 addpath(genpath(path));
+path = strcat(path, '\data\');
 
 cd data
 file_names = dir;
@@ -28,10 +29,10 @@ for i=4:numel(file_names)
 end
 
 min_x = min(x) * 128;
-max_x = (max(x) * 128) + 128;
+max_x = max(x) * 128 + 128;
 min_y = min(y) * 128;
-max_y = (max(y) * 128) + 128;
+max_y = max(y) * 128 + 128;
 min_z = min(z) * 128;
-max_z = (max(z) * 128) + 128;
+max_z = max(z) * 128 + 128;
 
 readKnossosRoi( path, prefix, [min_x max_x; min_y max_y; min_z max_z], 'uint16' )
