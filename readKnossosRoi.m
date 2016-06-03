@@ -1,4 +1,4 @@
-function kl_roi = readKnossosRoi( kl_parfolder, kl_fileprefix, kl_bbox, classT, kl_filesuffix, ending, numChannels)
+function success = readKnossosRoi( out_name, kl_parfolder, kl_fileprefix, kl_bbox, classT, kl_filesuffix, ending, numChannels)
 % READKNOSSOSROI: Read multiple raw data from EM into Matlab selecting a
 %       region of interest
 %
@@ -39,6 +39,7 @@ function kl_roi = readKnossosRoi( kl_parfolder, kl_fileprefix, kl_bbox, classT, 
 
    % Calculate the size of the roi in pixels and xyz-coordinates
     kl_bbox_size = kl_bbox(:,2)' - kl_bbox(:,1)' + [1 1 1];
+    
     kl_bbox_cubeind = [floor(( kl_bbox(:,1) - 1) / 128 ) ceil( kl_bbox(:,2) / 128 ) - 1];
 
     kl_roi = zeros( [kl_bbox_size, numChannels], classT );
@@ -81,7 +82,7 @@ function kl_roi = readKnossosRoi( kl_parfolder, kl_fileprefix, kl_bbox, classT, 
     kl_roi = single(kl_roi);
     [F, V] = MarchingCubes(x, y, z, kl_roi, 0);
     
-    output_name = strcat('obj\', kl_fileprefix, '.obj');
+    output_name = strcat('obj\', out_name, '.obj');
     file = fopen(output_name, 'w');
     for i = 1:length(V)
         fprintf(file, 'v %0.3f %0.3f %0.3f \n', V(i,1), V(i,2), V(i,3));
@@ -91,3 +92,5 @@ function kl_roi = readKnossosRoi( kl_parfolder, kl_fileprefix, kl_bbox, classT, 
     end
     
     fclose(file);
+    success = 1;
+    return
