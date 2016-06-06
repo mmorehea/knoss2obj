@@ -80,6 +80,7 @@ function success = readKnossosRoi( out_name, kl_parfolder, kl_fileprefix, kl_bbo
     kl_roi = flip(kl_roi, 1);
     nrrdWriter(output_name, kl_roi, [1 1 5.4545], [kl_bbox(1,1), kl_bbox(2,1), kl_bbox(3,1)*5.4545], 'raw');
     kl_roi = rot90(kl_roi, 3);
+    kl_roi = flip(kl_roi, 1);
     
     % OBJ write
     [x, y, z] = meshgrid(kl_bbox(2,1):kl_bbox(2,2), kl_bbox(1,1):kl_bbox(1,2),...
