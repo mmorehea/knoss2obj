@@ -74,6 +74,9 @@ function success = readKnossosRoi( out_name, kl_parfolder, kl_fileprefix, kl_bbo
         end
     end
     
+    output_name = strcat('./nrrd/', out_name, '.nrrd');
+    nrrdWriter(output_name, kl_roi, [1 1 1], [0 0 0], 'raw');
+    
     [x, y, z] = meshgrid(kl_bbox(2,1):kl_bbox(2,2), kl_bbox(1,1):kl_bbox(1,2),...
                         kl_bbox(3,1):kl_bbox(3,2));
     x = single(x);
