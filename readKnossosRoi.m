@@ -75,12 +75,10 @@ function success = readKnossosRoi( out_name, kl_parfolder, kl_fileprefix, kl_bbo
     end
     
     % NRRD write
-    output_name = strcat('./nrrd/', out_name, '.nrrd');
-    kl_roi = rot90(kl_roi);
-    kl_roi = flip(kl_roi, 1);
-    nrrdWriter(output_name, kl_roi, [1 1 5.4545], [kl_bbox(1,1), kl_bbox(2,1), kl_bbox(3,1)*5.4545], 'raw');
-    kl_roi = rot90(kl_roi, 3);
-    kl_roi = flip(kl_roi, 1);
+    output_name = strcat('/media/curie/5TB/Dropbox/KnossNrrds/', out_name, '.nrrd');
+    kl_roi_nrrd = rot90(kl_roi);
+    kl_roi_nrrd = flip(kl_roi_nrrd, 1);
+    nrrdWriter(output_name, kl_roi_nrrd, [1 1 5.4545], [kl_bbox(1,1), kl_bbox(2,1), kl_bbox(3,1)*5.4545], 'raw');
     
     % OBJ write
     [x, y, z] = meshgrid(kl_bbox(2,1):kl_bbox(2,2), kl_bbox(1,1):kl_bbox(1,2),...
