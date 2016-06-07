@@ -1,6 +1,4 @@
 # knoss2obj
-**1.** load zips into /WebKnossos
+**1.** run python script
 
-**2.** run python script
-
-**3.** celebrate!
+**2.** celebrate!
