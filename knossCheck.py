@@ -13,8 +13,8 @@ from watchdog.events import FileSystemEventHandler
 def perform_update():
     zips = []
     dropbox_path = '/media/curie/5TB/Dropbox/WebKnossos/'
-    data_path = '/home/curie/knoss2obj/data/'
-    obj_path = '/home/curie/knoss2obj/obj/'
+    data_path = '/home/curie/NathanCode/knoss2obj/data/'
+    obj_path = '/home/curie/NathanCode/knoss2obj/obj/'
     nrrd_path = '/media/curie/5TB/Dropbox/KnossNrrds/'
     print('Starting matlab engine...')
     eng = matlab.engine.start_matlab()
@@ -30,7 +30,7 @@ def perform_update():
                 mod_times[filename] = current_mod_time
             elif mod_times[filename] != current_mod_time:
                 mod_times[filename] = current_mod_time
-                nrrd_removal_path = nrrd_path + filename[:-4] + '.nrrd'
+                nrrd_removal_path = nrrd_path + filename[:-5] + '.nrrd'
                 obj_removal_path = obj_path + filename[:-4] + '.obj'
                 os.remove(nrrd_removal_path)
                 os.remove(obj_removal_path)
@@ -47,6 +47,9 @@ def perform_update():
         current_obj_name = 'obj/' + names[i] + '.obj'
         current_nrrd_path = nrrd_path + '*.nrrd'
         current_nrrd_name = nrrd_path + names[i] + '.nrrd'
+
+        print(current_obj_name in glob.glob('obj/*.obj'))
+        print(current_nrrd_name in glob.glob(current_nrrd_path))
 
         if current_obj_name in glob.glob('obj/*.obj') and current_nrrd_name in glob.glob(current_nrrd_path):
             print('Raw set {} is already up to date.'.format(i + 1))
