@@ -1,4 +1,5 @@
 import code
+from datetime import datetime
 import fnmatch
 import glob
 import matlab.engine
@@ -48,11 +49,8 @@ def perform_update():
         current_nrrd_path = nrrd_path + '*.nrrd'
         current_nrrd_name = nrrd_path + names[i] + '.nrrd'
 
-        print(current_obj_name in glob.glob('obj/*.obj'))
-        print(current_nrrd_name in glob.glob(current_nrrd_path))
-
-        if current_obj_name in glob.glob('obj/*.obj') and current_nrrd_name in glob.glob(current_nrrd_path):
-            print('Raw set {} is already up to date.'.format(i + 1))
+        if current_obj_name[:-4].strip()+'.obj' in glob.glob('obj/*.obj') and current_nrrd_name[:-5].strip()+'.nrrd' in glob.glob(current_nrrd_path):
+            print('Raw set {} is already up to date. Moving on...'.format(i + 1))
             continue
         current_zip = zf.ZipFile(zips[i])
         current_zip.extractall(data_path)
@@ -78,7 +76,7 @@ observer.start()
 try:
     while True:
         time.sleep(30)
-        print('I\'m watching')
+        print('Update check performed: ' + str(datetime.now()))
 except KeyboardInterrupt:
     observer.stop()
 observer.join()
