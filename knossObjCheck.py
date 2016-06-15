@@ -1,3 +1,4 @@
+import code
 import fnmatch
 import glob
 import matlab.engine
@@ -11,16 +12,6 @@ def clear_raws():
     for raw in raws_to_delete:
         os.remove(raw)
 
-# Load modtimes from pickle
-if '/home/curie/NathanCode/knoss2obj/modtimes.pkl' in glob.glob('/home/curie/NathanCode/knoss2obj/*.pkl'):
-    pkl_file = open('/home/curie/NathanCode/knoss2obj/modtimes.pkl', 'rb')
-    mod_times = pickle.load(pkl_file)
-    pkl_file.close()
-    print('File modification times loaded from file.')
-else:
-    mod_times = dict()
-    print('No file modification times found.')
-
 # Set paths, start engine
 zips = []
 names = []
@@ -32,11 +23,52 @@ print('Starting matlab engine...')
 eng = matlab.engine.start_matlab()
 eng.cd('/home/curie/NathanCode/knoss2obj/')
 
+# Clean up outdated nrrds and objs
+zipcheck = []
+nrrdcheck = []
+objcheck = []
+for root, dirnames, filenames in os.walk(dropbox_path, followlinks=True):
+    for filename in fnmatch.filter(filenames, '*.zip'):
+        zipcheck.append(filename)
+for root, dirnames, filenames in os.walk(nrrd_path, followlinks=True):
+    for filename in fnmatch.filter(filenames, '*.nrrd'):
+        nrrdcheck.append(filename)
+for root, dirnames, filenames in os.walk(obj_path, followlinks=True):
+    for filename in fnmatch.filter(filenames, '*.obj'):
+        objcheck.append(filename)
+for nrrd2check in nrrdcheck:
+    found = False
+    for zip2check in zipcheck:
+        if nrrd2check[:-5] == zip2check[:-4]:
+            found = True
+    if not found:
+        os.remove(os.path.join(nrrd_path, nrrd2check))
+for obj2check in objcheck:
+    found = False
+    for zip2check in zipcheck:
+        if obj2check[:-4] == zip2check[:-4]:
+            found = True
+    if not found:
+        os.remove(os.path.join(obj_path, obj2check))
+
+# Load modtimes from pickle
+if '/home/curie/NathanCode/knoss2obj/modtimes.pkl' in glob.glob('/home/curie/NathanCode/knoss2obj/*.pkl'):
+    pkl_file = open('/home/curie/NathanCode/knoss2obj/modtimes.pkl', 'rb')
+    mod_times = pickle.load(pkl_file)
+    pkl_file.close()
+    print('File modification times loaded from file.')
+else:
+    mod_times = dict()
+    print('No file modification times found.')
+
+
 # Determine which files to update
 print('Gathering zipped raw files...')
 i = 0
 for root, dirnames, filenames in os.walk(dropbox_path, followlinks=True):
+
     for filename in fnmatch.filter(filenames, '*.zip'):
+
         zips.append(os.path.join(root, filename))
         current_mod_time = os.stat(os.path.join(root, filename)).st_mtime
         if filename not in mod_times.keys():
@@ -56,6 +88,7 @@ for i in range(len(zips)):
     names.append(zips[i].split('/')[len(zips[i].split('/')) - 1][:-4])
     print('Converting {}...  {} of {}'.format(names[i], i + 1, len(zips)))
 
+    current_obj_path = obj_path + names[i] + '.obj'
     current_nrrd_path = nrrd_path + '*.nrrd'
     current_nrrd_name = nrrd_path + names[i] + '.nrrd'
 
