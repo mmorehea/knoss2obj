@@ -79,26 +79,28 @@ function success = readKnossosRoi( out_name, kl_parfolder, kl_fileprefix, kl_bbo
     kl_roi_nrrd = rot90(kl_roi);
     kl_roi_nrrd = flip(kl_roi_nrrd, 1);
     nrrdWriter(output_name, kl_roi_nrrd, [1 1 5.4545], [kl_bbox(1,1), kl_bbox(2,1), kl_bbox(3,1)*5.4545], 'raw');
+    %%%
     
-    % OBJ write
-    [x, y, z] = meshgrid(kl_bbox(2,1):kl_bbox(2,2), kl_bbox(1,1):kl_bbox(1,2),...
-                       kl_bbox(3,1):kl_bbox(3,2));
-    x = single(x);
-    y = single(y);
-    z = single(z);
-    kl_roi = single(kl_roi);
-    [F, V] = MarchingCubes(x, y, z, kl_roi, 0);
-    
-    output_name = strcat('./obj/', out_name, '.obj');
-    file = fopen(output_name, 'w');
-    for i = 1:length(V)
-        fprintf(file, 'v %0.3f %0.3f %0.3f \n', V(i,1), V(i,2), V(i,3));
-    end
-    for i = 1:length(F)
-       fprintf(file, 'f %0.3f %0.3f %0.3f \n', F(i,1), F(i,2), F(i,3));
-    end
-    
-    fclose('all')
+% %     % OBJ write
+% %     [x, y, z] = meshgrid(kl_bbox(2,1):kl_bbox(2,2), kl_bbox(1,1):kl_bbox(1,2),...
+% %                        kl_bbox(3,1):kl_bbox(3,2));
+% %     x = single(x);
+% %     y = single(y);
+% %     z = single(z);
+% %     kl_roi = single(kl_roi);
+% %     [F, V] = MarchingCubes(x, y, z, kl_roi, 0);
+% %     
+% %     output_name = strcat('./obj/', out_name, '.obj');
+% %     file = fopen(output_name, 'w');
+% %     for i = 1:length(V)
+% %         fprintf(file, 'v %0.3f %0.3f %0.3f \n', V(i,1), V(i,2), V(i,3));
+% %     end
+% %     for i = 1:length(F)
+% %        fprintf(file, 'f %0.3f %0.3f %0.3f \n', F(i,1), F(i,2), F(i,3));
+% %     end
+% %     %%%
+%     
+%     fclose('all')
     
     success = 1;
     return

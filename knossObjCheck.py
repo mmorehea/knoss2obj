@@ -5,6 +5,7 @@ import os
 import pickle
 import zipfile as zf
 
+
 def clear_raws():
     raws_to_delete = glob.glob('/home/curie/NathanCode/knoss2obj/data/*.raw')
     for raw in raws_to_delete:
@@ -48,24 +49,22 @@ for root, dirnames, filenames in os.walk(dropbox_path, followlinks=True):
             os.remove(obj_removal_path)
         i += 1
 
-# Create an obj and a nrrd for each file for which an update is needed
+# Create a nrrd for each file for which an update is needed
 for i in range(len(zips)):
 
     clear_raws()
     names.append(zips[i].split('/')[len(zips[i].split('/')) - 1][:-4])
     print('Converting {}...  {} of {}'.format(names[i], i + 1, len(zips)))
 
-    current_obj_path = obj_path + names[i] + '.obj'
     current_nrrd_path = nrrd_path + '*.nrrd'
     current_nrrd_name = nrrd_path + names[i] + '.nrrd'
 
-    if current_obj_path[:-4].strip()+'.obj' in glob.glob('/home/curie/NathanCode/knoss2obj/obj/*.obj') and \
-                            current_nrrd_name[:-5].strip()+'.nrrd' in glob.glob(current_nrrd_path):
+    if current_obj_path[:-4].strip()+'.obj' in glob.glob('/home/curie/NathanCode/knoss2obj/obj/*.obj'):
         print('Raw set {} is already up to date. Moving on...'.format(i + 1))
         continue
     current_zip = zf.ZipFile(zips[i])
     current_zip.extractall(data_path)
-    success = eng.start(names[i])
+    success = eng.startObj(names[i])
 
 # Save modtimes back to pickle
 pkl_output = open('/home/curie/NathanCode/knoss2obj/modtimes.pkl', 'wb')
