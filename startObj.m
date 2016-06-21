@@ -1,7 +1,7 @@
 function success =  start( out_name ) 
 
 path = [pwd,'/',mfilename];
-path = path(1:length(path)-6);
+path = path(1:length(path)-10);
 addpath(genpath(path));
 path = strcat(path, '/data/');
 
