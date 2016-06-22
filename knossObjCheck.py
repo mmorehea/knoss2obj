@@ -92,6 +92,10 @@ for i in range(len(zips)):
     current_nrrd_path = nrrd_path + '*.nrrd'
     current_nrrd_name = nrrd_path + names[i] + '.nrrd'
 
+    if os.path.getsize(current_nrrd_name) > 1.5e10:
+        print('Raw set {} is too large and will not convert to .obj with the current memory restriction.'.format(i+1))
+        continue
+
     if current_obj_path[:-4].strip()+'.obj' in glob.glob('/home/curie/NathanCode/knoss2obj/obj/*.obj'):
         print('Raw set {} is already up to date. Moving on...'.format(i + 1))
         continue
