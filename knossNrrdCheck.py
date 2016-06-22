@@ -40,13 +40,11 @@ for root, dirnames, filenames in os.walk(dropbox_path, followlinks=True):
         zips.append(os.path.join(root, filename))
         current_mod_time = os.stat(os.path.join(root, filename)).st_mtime
         if filename not in mod_times.keys():
-            mod_times[filename] = current_mod_time
-        elif mod_times[filename] != current_mod_time:
-            mod_times[filename] = current_mod_time
-            nrrd_removal_path = nrrd_path + filename[:-5] + '.nrrd'
-            obj_removal_path = obj_path + filename[:-4] + '.obj'
+           mod_times[filename] = current_mod_time
+        elif mod_times[filename] != current_mod_time and os.path.isfile(nrrd_path + filename[:-4] + '.nrrd'):
+            del mod_times[filename]
+            nrrd_removal_path = nrrd_path + filename[:-4] + '.nrrd'
             os.remove(nrrd_removal_path)
-            os.remove(obj_removal_path)
         i += 1
 
 # Create a nrrd for each file for which an update is needed

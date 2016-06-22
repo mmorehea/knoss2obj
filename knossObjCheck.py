@@ -74,7 +74,7 @@ for root, dirnames, filenames in os.walk(dropbox_path, followlinks=True):
         if filename not in mod_times.keys():
             mod_times[filename] = current_mod_time
         elif mod_times[filename] != current_mod_time:
-            mod_times[filename] = current_mod_time
+            del mod_times[filename]
             nrrd_removal_path = nrrd_path + filename[:-5] + '.nrrd'
             obj_removal_path = obj_path + filename[:-4] + '.obj'
             os.remove(nrrd_removal_path)
