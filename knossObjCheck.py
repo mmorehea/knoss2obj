@@ -6,7 +6,6 @@ import os
 import pickle
 import zipfile as zf
 
-
 def clear_raws():
     raws_to_delete = glob.glob('/home/curie/NathanCode/knoss2obj/data/*.raw')
     for raw in raws_to_delete:
@@ -92,16 +91,13 @@ for i in range(len(zips)):
     current_nrrd_path = nrrd_path + '*.nrrd'
     current_nrrd_name = nrrd_path + names[i] + '.nrrd'
 
-    if os.path.getsize(current_nrrd_name) > 1.5e10:
-        print('Raw set {} is too large and will not convert to .obj with the current memory restriction.'.format(i+1))
-        continue
-
     if current_obj_path[:-4].strip()+'.obj' in glob.glob('/home/curie/NathanCode/knoss2obj/obj/*.obj'):
         print('Raw set {} is already up to date. Moving on...'.format(i + 1))
         continue
     current_zip = zf.ZipFile(zips[i])
     current_zip.extractall(data_path)
     success = eng.startObj(names[i])
+    os.system("meshlabserver -i " + current_obj_path + " -o " + current_obj_path + " -s stretchanddeci.mlx");
 
 # Save modtimes back to pickle
 pkl_output = open('/home/curie/NathanCode/knoss2obj/modtimes.pkl', 'wb')
