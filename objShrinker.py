@@ -19,7 +19,7 @@ for obj in glob.glob(obj_path):
     command2 = "meshlabserver -i " + obj[:-4] + "_temp.obj -o " + obj[:-4] + "_temp.obj -s deci.mlx"
 
     call(command1, shell=True)
-    while os.path.getsize(obj[:-4] + "_temp.obj") > 1000000:
+    while os.path.getsize(obj[:-4] + "_temp.obj") > 1300000:
         call(command2, shell=True)
 
     name = (obj.split("/"))[-1]
