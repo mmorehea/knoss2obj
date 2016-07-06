@@ -84,6 +84,8 @@ function success = readKnossosRoi( out_name, kl_parfolder, kl_fileprefix, kl_bbo
                 
                 if LARGE_FILE == true
                     [x, y, z] = meshgrid(1:128, 1:128, 1:128);
+                    kl_roi = rot90(kl_roi, 1);
+                    kl_roi = flip(kl_roi, 1);
                     x = single(x);
                     y = single(y);
                     z = single(z);
@@ -121,7 +123,7 @@ function success = readKnossosRoi( out_name, kl_parfolder, kl_fileprefix, kl_bbo
         [x, y, z] = meshgrid(kl_bbox(1,1):kl_bbox(1,2), kl_bbox(2,1):kl_bbox(2,2),...
                            kl_bbox(3,1):kl_bbox(3,2));
         kl_roi = rot90(kl_roi, 1);
-     %   kl_roi = flip(kl_roi, 1);
+        kl_roi = flip(kl_roi, 1);
         x = single(x);
         y = single(y);
         z = single(z);
