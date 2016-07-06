@@ -37,7 +37,7 @@ function success = readKnossosRoi( out_name, kl_parfolder, kl_fileprefix, kl_bbo
     end
     cubesize = [128, 128, 128, numChannels];
 
-   % Calculate the size of the roi in pixels and xyz-coordinates
+    % Calculate the size of the roi in pixels and xyz-coordinates
     kl_bbox_size = kl_bbox(:,2)' - kl_bbox(:,1)' + [1 1 1];
     
     kl_bbox_cubeind = [floor( kl_bbox(:,1) / 128 ) ceil( kl_bbox(:,2) / 128 ) - 1];
@@ -46,7 +46,7 @@ function success = readKnossosRoi( out_name, kl_parfolder, kl_fileprefix, kl_bbo
    
     % Size check
     nrrdFile = dir(strcat('/media/curie/5TB/Dropbox/KnossNrrds/', out_name, '.nrrd'));
-    if nrrdFile.bytes > 1.4*(10^10)
+    if ~isempty(nrrdFile) && nrrdFile.bytes > 1.4*(10^10)
         LARGE_FILE = true;
         numXCubes = kl_bbox_cubeind(1,2)-kl_bbox_cubeind(1,1);
         numYCubes = kl_bbox_cubeind(2,2)-kl_bbox_cubeind(2,1);
@@ -118,8 +118,10 @@ function success = readKnossosRoi( out_name, kl_parfolder, kl_fileprefix, kl_bbo
     
     % OBJ write
     if LARGE_FILE == false
-        [x, y, z] = meshgrid(kl_bbox(2,1):kl_bbox(2,2), kl_bbox(1,1):kl_bbox(1,2),...
+        [x, y, z] = meshgrid(kl_bbox(1,1):kl_bbox(1,2), kl_bbox(2,1):kl_bbox(2,2),...
                            kl_bbox(3,1):kl_bbox(3,2));
+        kl_roi = rot90(kl_roi, 1);
+     %   kl_roi = flip(kl_roi, 1);
         x = single(x);
         y = single(y);
         z = single(z);
